@@ -50,7 +50,7 @@ L'architecture retenue repose sur six axes :
 |---|---|---|---|---|---|
 | VM-VEEAM | Serveur de Backup | Windows Server 2025 | 8 | 16 GB | 500 GB |
 | VM-IMAGERIE | Stockage imagerie légère (SMB + DFS) | Windows Server 2025 | 4 | 8 GB | 2 TB |
-| VM-MON | Supervision (Prometheus + Grafana) | Debian 12 | 2 | 4 GB | 100 GB |
+| VM-MON | Supervision (Prometheus + Grafana) | Ubuntu 26.04 | 2 | 4 GB | 100 GB |
 | VM-WEB | Portail patient (Nginx + app) | Ubuntu 26.04 | 2 | 4 GB | 50 GB |
 
 > **Dimensionnement stockage RGPD** : le volume de données actuel est de **5 TB** avec une croissance de **10 GB/mois** (~120 GB/an). À 5 ans, le volume atteindra ~5,6 TB de données actives. Les recommandations RGPD (durée de conservation, chiffrement, journalisation) imposent une marge supplémentaire. Le cluster est dimensionné avec 4x 4 TB SAS par nœud (ZFS RAID-Z1 = ~8 TB utile/nœud) pour absorber 5+ ans de croissance.
