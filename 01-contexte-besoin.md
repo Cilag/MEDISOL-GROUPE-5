@@ -101,49 +101,21 @@ L'équipe technique est réduite et externalisée : elle est **hébergée dans u
 
 ---
 
-## 1.5 Contraintes budgétaires
-
-Le client a confirmé la disponibilité d'un **budget large** pour ce projet. Il n'existe pas de contrainte financière particulière — la proposition peut intégrer des solutions robustes et redondantes sans compromettre l'acceptation.
-
-Les points clés validés par le client :
-
-- **Matériel** : 2 serveurs physiques compacts (format 1U/2U) — le dimensionnement peut être revu à la hausse si la redondance ou les performances l'exigent
-- **Licences** : préférence open-source ; les licences Microsoft 365 sont déjà en place
-- **OPEX** : coût mensuel maîtrisé, pas de full-cloud imprévisible
-- **Prestataire unique** : maintenance externalisée à un seul prestataire
-
-### Estimation budgétaire prévisionnelle
-
-Les chiffres ci-dessous constituent une base de référence. Ils peuvent être dépassés si des choix techniques justifiés apportent une meilleure redondance ou de meilleures performances.
-
-| Poste | Estimation (HT) |
-|---|---|
-| 2x serveurs physiques (Dell R350 ou équivalent) | 8 000 – 14 000 € |
-| 2x Switch manageable 24 ports avec PoE (pour AP Wi-Fi) | 1 200 – 2 000 € |
-| 2x Access Points Wi-Fi 6 managés | 600 – 1 000 € |
-| Licences Windows Server 2022 (2x Standard, 32 CAL) | 3 000 – 4 500 € |
-| Prestations migration + configuration | 4 000 – 7 000 € |
-| **Total CAPEX estimé** | **~17 000 – 29 000 €** |
-
-> Ces estimations sont indicatives. Le client ayant confirmé un budget large, des options complémentaires (stockage redondant supplémentaire, licences entreprise, matériel haute disponibilité) peuvent être proposées et chiffrées séparément.
-
----
-
-## 1.6 Synthèse du besoin
+## 1.5 Synthèse du besoin
 
 ```
 Situation actuelle    → Problème             → Besoin
 ──────────────────────────────────────────────────────────────────────
-Réseau plat          → Données patients      → VLANs + pare-feu OPNsense
+Réseau plat          → Données patients      → VLANs + pare-feu SOPHOS
                        exposées              
 Wi-Fi unique         → Saturation + risque   → SSIDs par VLAN + QoS
 1 serveur imagerie   → SPOF données          → 2 nœuds Proxmox + réplication
 Logiciel patient     → Lenteurs aux pointes  → VM dédiée WS 2022
   sur poste physique                         
-Accès nomades        → Non sécurisé          → OpenVPN + MFA
+Accès nomades        → Non sécurisé          → VPN SOPHOS + MFA
   non sécurisés
-Pas de PRA           → 0 plan de reprise     → PBS + Azure Backup + PRA écrit     # A corriger PBS
-Portail patient      → Hébergement précaire  → VM DMZ dédiée
+Pas de PRA           → 0 plan de reprise     → VEEAM + Azure Backup + PRA écrit
+Portail patient      → Hébergement précaire  → VM NGNIX
   en projet
 5 TB + 10 GB/mois   → Croissance données    → Stockage scalable + archivage RGPD
 ```
