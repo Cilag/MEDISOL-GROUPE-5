@@ -28,7 +28,7 @@ L'architecture retenue repose sur six axes :
 | **VLAN 30** | Infra | 10.30.0.0/24 | DNS, AD/LDAP, DHCP | Tout accès direct externe |
 | **VLAN 40** | IoT | 10.40.0.0/24 | VLAN 30 | Tous les autres VLANs |
 | **VLAN 50** | Sécurité | 10.50.0.0/24 | NVR local uniquement | Tous les autres VLANs |
-| **VLAN 99** | Invités / Patients | 10.99.0.0/24 | Internet uniquement | Tous les VLANs internes |
+| **VLAN 99** | Admin | 10.99.0.0/24 | Accès INFRA, IOT & Security | Tous les autres VLANs internes |
 
 ---
 
@@ -48,11 +48,10 @@ L'architecture retenue repose sur six axes :
 
 | VM | Rôle | OS | vCPU | RAM | Stockage |
 |---|---|---|---|---|---|
-| VM-PATIENT | Logiciel patient (RDS Remote App) | Windows Server 2025 | 8 | 16 GB | 150 GB |
+| VM-VEEAM | Serveur de Backup | Windows Server 2025 | 8 | 16 GB | 500 GB |
 | VM-IMAGERIE | Stockage imagerie légère (SMB + DFS) | Windows Server 2025 | 4 | 8 GB | 2 TB |
 | VM-MON | Supervision (Prometheus + Grafana) | Debian 12 | 2 | 4 GB | 100 GB |
 | VM-WEB | Portail patient (Nginx + app) | Ubuntu 26.04 | 2 | 4 GB | 50 GB |
-| VM-IMMU | Archive immuable | Ubuntu 26.04 | 4 | 8 GB | 4 TB |
 
 > **Dimensionnement stockage RGPD** : le volume de données actuel est de **5 TB** avec une croissance de **10 GB/mois** (~120 GB/an). À 5 ans, le volume atteindra ~5,6 TB de données actives. Les recommandations RGPD (durée de conservation, chiffrement, journalisation) imposent une marge supplémentaire. Le cluster est dimensionné avec 4x 4 TB SAS par nœud (ZFS RAID-Z1 = ~8 TB utile/nœud) pour absorber 5+ ans de croissance.
 
@@ -61,9 +60,8 @@ L'architecture retenue repose sur six axes :
 - **Pare-feu** : Sophos 
 - **Switch** : Switch manageable L2/L3 24 ports PoE 
 - **Wi-Fi** : 2x Access Points Wi-Fi 6 (Ubiquiti UniFi U6-Pro ou équivalent)
-  - SSID `MEDISOL-User` → VLAN 10
-  - SSID `MEDISOL-Admin` → VLAN 20
-  - SSID `MEDISOL-Patients` → VLAN 99 (isolé, portail captif)
+  - SSID `MEDISOL-User` → VLAN 10 (utilisateurs de l'entreprise) 
+  - SSID `MEDISOL-Clients` → VLAN 20 (isolé, portail captif)
 
 ---
 
@@ -94,9 +92,6 @@ VEEAM_IP -> VLAN 30
 - **Proxmox HA Manager** : bascule automatique des VMs critiques (VM-PATIENT, VM-IMAGERIE) en cas de panne nœud
 - **ZFS Replication** : réplication synchrone des datastores (toutes les 15 min)
 - **VEEAM** : sauvegardes nightly 23h00, rétention 30 jours
-
-
-> Grâce au budget large disponible, la stratégie de sauvegarde peut intégrer un **abonnement Proxmox Backup Server Enterprise**, un **NAS dédié hors site** (ex. Synology RS1221+ avec disques 10 TB), et une réplication vers **Azure Backup** pour les données RGPD. Coût estimé supplémentaire : 3 000 – 5 000 €/an.
 
 ---
 
@@ -132,4 +127,4 @@ Internet ──► VPNSSL (HTTPS 443) ──► VM-WEB (Nginx reverse proxy)
 
 - Flux sortant limité : VM-WEB ne peut pas accéder aux VLANs 10/20/40
 - Certificat TLS automatique
-- WAF OPNsense Nginx pour protection des applications web     # A voir quoi mettre au lieu d'OPNsense
+- WAF Sophos pour protection des applications web
