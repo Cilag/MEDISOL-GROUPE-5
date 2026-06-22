@@ -105,7 +105,7 @@ VEEAM_IP -> VLAN 30
 ```
 Praticien (domicile / cabinet secondaire)
     │
-    └─[OpenVPN]──► Sophos Firewall
+    └─[VPNSSL]──► Sophos Firewall
                               │
                               └──► VLAN 10
                                     │
@@ -124,7 +124,7 @@ Praticien (domicile / cabinet secondaire)
 Le portail patient (en développement) est hébergé dans **VM-WEB** (VLAN 30, sous-zone DMZ) :
 
 ```
-Internet ──► OpenVPN (HTTPS 443) ──► VM-WEB (Nginx reverse proxy)
+Internet ──► VPNSSL (HTTPS 443) ──► VM-WEB (Nginx reverse proxy)
                                          │
                                          └──► Application portail patient
                                               └──► Base de données chiffrée
