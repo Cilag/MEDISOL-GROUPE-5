@@ -38,3 +38,10 @@ medisol/
 - **Nomadisme** : VPN WireGuard pour praticiens itinérants
 - **Sauvegardes** : règle 3-2-1 — PBS local + Azure Backup hors site, conformité RGPD
 - **PRA** : plan de reprise documenté, RTO < 4 h
+
+
+#### Notre groupe : 
+ - OZOUX Guillaume
+ - BELMAMOUN Hicham
+ - DURANDEAU Emeric
+ - MARQUIE Médéric
