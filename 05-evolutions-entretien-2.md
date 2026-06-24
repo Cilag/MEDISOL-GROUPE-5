@@ -73,6 +73,5 @@ Si MEDISOL étend son activité à l'imagerie médicale réglementée (radiologi
 | ANS — Référentiel HDS (Agence du Numérique en Santé) | https://esante.gouv.fr/produits-services/hds |
 | ANSSI — Guide hygiène informatique v2 | ANSSI-GP-078 — https://www.ssi.gouv.fr/guide/guide-dhygiene-informatique/ |
 | Code de la santé publique — Art. R. 1112-7 (conservation dossier médical) | https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006912232 |
-| Azure Backup — Documentation Microsoft | https://learn.microsoft.com/fr-fr/azure/backup/ |
 | Microsoft — Avenant HDS Azure (Hébergeur de Données de Santé) | https://aka.ms/healthdataprotectionaddendum |
 | NIST SP 800-34 — Guide PRA | https://csrc.nist.gov/publications/detail/sp/800-34/rev-1/final |
